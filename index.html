@@ -10,17 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .no-select {
-            -webkit-touch-callout: none; /* iOS Safari */
-            -webkit-user-select: none; /* Safari */
-            -khtml-user-select: none; /* Konqueror HTML */
-            -moz-user-select: none; /* Old versions of Firefox */
-            -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .no-select { -webkit-user-select: none; user-select: none; }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800 antialiased no-select" oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
@@ -59,16 +50,22 @@
                 <div>
                     <div class="border-b border-gray-200">
                         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                            <button id="users-tab" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-blue-600 border-blue-600">User Management</button>
-                            <button id="questions-tab" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">Question Bank</button>
-                            <button id="monitoring-tab" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">Live Monitoring</button>
+                            <button id="users-tab-btn" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-blue-600 border-blue-600">User Management</button>
+                            <button id="questions-tab-btn" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">Question Bank</button>
+                            <button id="monitoring-tab-btn" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">Live Monitoring</button>
                         </nav>
                     </div>
                 </div>
 
                 <!-- Users Panel -->
                 <div id="users-panel" class="mt-6">
-                    <button id="add-user-btn" class="mb-4 bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700">Add New User</button>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-4 mb-6" role="alert">
+                        <p class="font-bold">How to Add New Users</p>
+                        <p>1. Go to your Firebase Console > Authentication > Users tab.</p>
+                        <p>2. Click "Add user" and create a new user with an email and password.</p>
+                        <p>3. Refresh this dashboard. The new user will appear below.</p>
+                        <p>4. Click "Edit" on the new user to assign a name and role.</p>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white">
                             <thead class="bg-gray-50">
@@ -98,34 +95,24 @@
             </div>
         </div>
         
-        <!-- Quiz Interface (No changes here) -->
-        <div id="quiz-screen" class="hidden w-full max-w-4xl">
-            <!-- ... quiz UI ... -->
-        </div>
-
-        <!-- Result Screen (No changes here) -->
-        <div id="result-screen" class="hidden w-full max-w-2xl text-center">
-             <!-- ... result UI ... -->
-        </div>
+        <!-- Quiz Interface and Result Screen remain the same -->
+        <div id="quiz-screen" class="hidden w-full max-w-4xl"><!-- ... --></div>
+        <div id="result-screen" class="hidden w-full max-w-2xl text-center"><!-- ... --></div>
     </div>
     
-    <!-- Modals (Updated for Email/Password) -->
+    <!-- Modals -->
     <div id="user-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
         <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
-            <h2 id="user-modal-title" class="text-2xl font-bold mb-4">Add User</h2>
+            <h2 id="user-modal-title" class="text-2xl font-bold mb-4">Edit User</h2>
             <form id="user-form">
                 <input type="hidden" id="user-id">
                 <div class="mb-4">
-                    <label for="user-name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input type="text" id="user-name" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="user-email" class="mt-1 block w-full p-2 border bg-gray-100 border-gray-300 rounded-md" disabled>
                 </div>
                 <div class="mb-4">
-                    <label for="user-email" class="block text-sm font-medium text-gray-700">User Email</label>
-                    <input type="email" id="user-email" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
-                </div>
-                 <div class="mb-4">
-                    <label for="user-password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" id="user-password" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
+                    <label for="user-name" class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" id="user-name" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
                 </div>
                 <div class="mb-4">
                     <label for="user-role" class="block text-sm font-medium text-gray-700">Role</label>
@@ -136,29 +123,22 @@
                 </div>
                 <div class="flex justify-end space-x-4">
                     <button type="button" id="cancel-user-modal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400">Cancel</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Save User</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Save Changes</button>
                 </div>
             </form>
         </div>
     </div>
     
-    <!-- Question Modal (No changes here) -->
-    <div id="question-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 ...">
-        <!-- ... question modal form ... -->
-    </div>
+    <div id="question-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 ..."><!-- ... --></div>
 
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { 
-            getAuth, 
-            onAuthStateChanged, 
-            signOut,
-            createUserWithEmailAndPassword,
-            signInWithEmailAndPassword
+            getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { 
-            getFirestore, collection, getDocs, doc, setDoc, getDoc, deleteDoc, query, where, onSnapshot, addDoc 
+            getFirestore, collection, getDocs, doc, setDoc, getDoc, deleteDoc, query, where, onSnapshot
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -166,7 +146,7 @@
             authDomain: "quiz-3ff63.firebaseapp.com",
             projectId: "quiz-3ff63",
             storageBucket: "quiz-3ff63.appspot.com",
-            messagingSenderId: "550165386",
+            messagingSenderId: "55016539386",
             appId: "1:55016539386:web:47d5ec961aaeabed7e3543",
             measurementId: "G-VX95K2R578"
         };
@@ -192,26 +172,27 @@
                 main();
             } catch (error) {
                 console.error("Firebase initialization failed:", error);
-                document.body.innerHTML = `<div class="text-center p-8 text-red-500"><h1>Error: App initialization failed.</h1></div>`;
             }
         }
 
         function main() {
             setupUIListeners();
-
             onAuthStateChanged(auth, async (user) => {
                 showScreen('loading');
                 if (user) {
                     currentUser = user;
-                    const userDocRef = doc(db, 'users', user.uid); // We now use the UID as the document ID
+                    const userDocRef = doc(db, 'users', user.uid);
                     const userDoc = await getDoc(userDocRef);
+                    
                     if (userDoc.exists()) {
                         userProfile = userDoc.data();
                         routeUser(userProfile.role);
                     } else {
-                        console.error("User is authenticated but no user document found. Logging out.");
-                        await signOut(auth);
-                        showScreen('auth');
+                        // User exists in Auth but not Firestore. Treat as new participant until role is set.
+                        userProfile = { name: user.email, role: 'participant' }; 
+                        // Create a basic profile for them
+                        await setDoc(userDocRef, { name: user.email, email: user.email, role: 'participant'});
+                        routeUser('participant');
                     }
                 } else {
                     currentUser = null;
@@ -232,7 +213,7 @@
                 loadAdminDashboard();
             } else {
                 showScreen('quiz');
-                // startQuiz(); // You would call your quiz logic here
+                // startQuiz(); // Your quiz logic would start here
             }
         }
 
@@ -240,10 +221,23 @@
             document.getElementById('login-btn').addEventListener('click', handleLogin);
             document.getElementById('admin-logout-btn').addEventListener('click', () => signOut(auth));
             
-            // Admin panel listeners
-            document.getElementById('add-user-btn').addEventListener('click', openAddUserModal);
             document.getElementById('cancel-user-modal').addEventListener('click', () => document.getElementById('user-modal').classList.add('hidden'));
             document.getElementById('user-form').addEventListener('submit', handleUserFormSubmit);
+            document.getElementById('users-table-body').addEventListener('click', handleUserActions);
+            
+            // Tab switching logic
+            const tabs = ['users', 'questions', 'monitoring'];
+            tabs.forEach(tabId => {
+                document.getElementById(`${tabId}-tab-btn`).addEventListener('click', () => {
+                     tabs.forEach(id => {
+                        document.getElementById(`${id}-panel`).classList.add('hidden');
+                        document.getElementById(`${id}-tab-btn`).classList.remove('text-blue-600', 'border-blue-600');
+                        document.getElementById(`${id}-tab-btn`).classList.add('text-gray-500');
+                     });
+                     document.getElementById(`${tabId}-panel`).classList.remove('hidden');
+                     document.getElementById(`${tabId}-tab-btn`).classList.add('text-blue-600', 'border-blue-600');
+                });
+            });
         }
 
         async function handleLogin() {
@@ -252,62 +246,97 @@
             authErrorEl.textContent = '';
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // onAuthStateChanged will handle routing
+                // onAuthStateChanged handles routing
             } catch (error) {
-                console.error("Login Error:", error);
                 authErrorEl.textContent = "Invalid email or password.";
             }
         }
+
+        // --- Admin Functions ---
+        async function loadAdminDashboard() {
+            loadUsers();
+            // loadQuestions();
+            // setupLiveMonitoring();
+        }
+
+        async function loadUsers() {
+            const usersTableBody = document.getElementById('users-table-body');
+            usersTableBody.innerHTML = `<tr><td colspan="4" class="text-center p-4">Loading Users...</td></tr>`;
+
+            // Note: Listing users client-side is not a standard Firebase SDK feature.
+            // A Cloud Function is the recommended way.
+            // As a workaround, we will only list/manage users already in our Firestore 'users' collection.
+            
+            const usersCol = collection(db, 'users');
+            onSnapshot(usersCol, (querySnapshot) => {
+                const users = [];
+                querySnapshot.forEach((doc) => {
+                    users.push({ id: doc.id, ...doc.data() });
+                });
+                renderUsersTable(users);
+            });
+        }
         
-        function openAddUserModal() {
-            document.getElementById('user-form').reset();
-            document.getElementById('user-id').value = '';
-            document.getElementById('user-modal-title').textContent = "Add New User";
-            document.getElementById('user-email').disabled = false;
-            document.getElementById('user-password').required = true;
-            document.getElementById('user-modal').classList.remove('hidden');
+        function renderUsersTable(users) {
+            const usersTableBody = document.getElementById('users-table-body');
+            usersTableBody.innerHTML = '';
+            if (users.length === 0) {
+                 usersTableBody.innerHTML = `<tr><td colspan="4" class="text-center p-4">No user data found in Firestore.</td></tr>`;
+                 return;
+            }
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">${user.name || ''}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${user.email || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.role === 'admin' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                            ${user.role}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button class="text-indigo-600 hover:text-indigo-900 edit-user-btn" data-id="${user.id}">Edit</button>
+                        <!-- Deleting users should be done from the console for safety -->
+                    </td>
+                `;
+                usersTableBody.appendChild(tr);
+            });
+        }
+        
+        async function handleUserActions(e) {
+            if (e.target.classList.contains('edit-user-btn')) {
+                const userId = e.target.dataset.id;
+                const userDoc = await getDoc(doc(db, 'users', userId));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    document.getElementById('user-id').value = userId;
+                    document.getElementById('user-email').value = data.email;
+                    document.getElementById('user-name').value = data.name;
+                    document.getElementById('user-role').value = data.role;
+                    document.getElementById('user-modal').classList.remove('hidden');
+                }
+            }
         }
 
         async function handleUserFormSubmit(e) {
             e.preventDefault();
             const userId = document.getElementById('user-id').value;
-            const email = document.getElementById('user-email').value;
-            const password = document.getElementById('user-password').value;
             
             const userData = {
                 name: document.getElementById('user-name').value,
-                email: email,
-                role: document.getElementById('user-role').value
+                role: document.getElementById('user-role').value,
+                email: document.getElementById('user-email').value
             };
 
             try {
-                if (userId) { // Editing existing user
-                    const userRef = doc(db, 'users', userId);
-                    await setDoc(userRef, { name: userData.name, role: userData.role }, { merge: true });
-                    // Password cannot be changed from here for security.
-                } else { // Creating new user
-                    // We need a temporary auth state to create a user, then sign back in as admin
-                    const currentAdmin = auth.currentUser;
-                    
-                    // This is a simplified flow. A better approach uses Cloud Functions.
-                    // For this client-side version, we can't create users directly without complex logic.
-                    // The simplest free method is to create them in the Firebase Console.
-                    alert("Please create users directly in the Firebase Authentication console for this version.");
-                    return;
-                }
+                const userRef = doc(db, 'users', userId);
+                await setDoc(userRef, userData, { merge: true });
                 document.getElementById('user-modal').classList.add('hidden');
-                loadUsers();
             } catch (error) {
-                console.error("Error saving user:", error);
-                alert(`Could not save user. Error: ${error.message}`);
+                alert(`Could not update user role. Error: ${error.message}`);
             }
         }
         
-        async function loadAdminDashboard() {
-            // Placeholder for admin functions
-            console.log("Admin Dashboard Loaded");
-        }
-
         initialize();
     </script>
 </body>
